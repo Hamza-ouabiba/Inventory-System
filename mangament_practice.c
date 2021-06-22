@@ -15,15 +15,47 @@ typedef struct
     int code;
     int qte;
     int purchase;
-    float totalamount;
     float price;
     float discount;
     float totalAmount;
     int number;
     date manufacturing;
 } product;
+typedef struct
+{
+   char name[20];
+   char password[20];
+} customer;
 product P[100];
 int n;
+void Login()
+{
+    customer p;
+    int i=0;
+    int c=1;
+    printf("SIGN IN TO AN EXISTENT ACCOUNT\n");
+    printf("ENTER YOUR USERNAME :");
+    gets(p.name);
+    printf("ENTER YOUR PASSWORD :");
+    while(1)
+    {
+        p.password[i]=getch();
+        printf("*");
+        if(p.password[i]==13)
+        {
+            break;
+        } else if(p.password[i]==8)
+        {
+             if(i>0)
+             {
+                 i--;
+                 printf("\b \b");
+             }
+        }
+        i++;
+    }
+}
+
 void add(int number)
 {
     int i;
@@ -123,6 +155,25 @@ product high_sales()
    }
    return max;
 }
+void delete_product()
+{
+    int code;
+    int i;
+    printf("Input code :");
+    scanf("%d",&code);
+    if(found(code)==-1)
+    {
+        printf("PRODUCT UNVAILABLE ");
+    } else
+    {
+        for(i=found(code);i<n;i++)
+        {
+            P[i]=P[i+1];
+        }
+        n--;
+        printf("\nTHE PRODUCT IS SUCCESFFULLY DELETED FROM THE LIST \n");
+    }
+}
 void main()
 {
     //Local variables :
@@ -130,16 +181,18 @@ void main()
     int action;
     int number;
     product max;
+    //login to a certain account
+    Login();
     do
     { clrscr();
-     printf("*********Welcome To the grocerie store********\n");
-     puts("[1]=Add a New product to the list ");
-     puts("[2]=View inventory ");
-     puts("[3]=Make a Purshase ");
-     puts("[4]=Display products with highest sales  ");
-     puts("[5]=Edit and Delete a product ");
-     puts("[6]=Exit programme ");
-     scanf("%d",&choice);
+     gotoxy(37,1);printf("*********Welcome To the grocerie store********\n");
+     gotoxy(40,4);puts("[1]=Add a New product to the list ");
+     gotoxy(40,5);puts("[2]=View inventory ");
+     gotoxy(40,6);puts("[3]=Make a Purshase ");
+     gotoxy(40,7);puts("[4]=Display products with highest sales  ");
+     gotoxy(40,8);puts("[5]=Edit and Delete a product ");
+     gotoxy(40,9);puts("[6]=Exit programme ");
+     gotoxy(40,10);scanf("%d",&choice);
      switch(choice)
      {
          case 1:printf("Input number of items youi wich to add :");scanf("%d",&number);add(number);break;
@@ -154,13 +207,14 @@ void main()
                     printf("Code : %d\n",max.code);
                     printf("Name : %s\n",max.name);
                     printf("Price : %.2f \n",max.price);
-                    printf("Discount : %d\n",max.discount);
+                    printf("Discount : %.2f\n",max.discount);
                     printf("Quantity Purchased : %d\n",max.number);
-                    printf("Stock : %d\n",max.qte);
-                    printf("Total Sales : %.2f\n",max.totalamount);
+                    printf("Stock Remaining : %d\n",max.qte-max.number);
+                    printf("Total Sales : %.2f\n",max.totalAmount);
                 }
             } break;
-         case 8:printf("goodbye :) ");getch();exit(0);break;
+         case 5:delete_product();break;
+         case 6:printf("goodbye :) ");getch();exit(0);break;
          default:printf("Wrong");break;
      }
      printf("\n---------------------------------------------\n");
