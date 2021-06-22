@@ -18,6 +18,8 @@ typedef struct
     float totalamount;
     float price;
     float discount;
+    float totalAmount;
+    int number;
     date manufacturing;
 } product;
 product P[100];
@@ -80,7 +82,6 @@ void purchase()
 {
     int i;
     int code;
-    int number;
     int position;
     printf("Input code :");
     scanf("%d",&code);
@@ -96,11 +97,31 @@ void purchase()
         printf("Price : %.2f \n",P[position].price);
         printf("Discount : %.2f %%\n",P[position].discount);
         printf("Input Number of purchases :");
-        scanf("%d",&number);
-        printf("\nRemaining in stocks : %d \n",P[position].qte-number);
-        printf("Discount Amount: %.2f\n",P[position].discount*number);
-        printf("Total Amount : %.2f",P[position].price-P[position].price*P[position].discount*number/100);
+        scanf("%d",&P[position].number);
+        printf("\nRemaining in stocks : %d \n",P[position].qte-P[position].number);
+        printf("Discount Amount: %.2f\n",P[position].discount*P[position].number);
+        P[position].totalAmount=P[position].price-P[position].price*P[position].discount*P[position].number/100;
+        printf("Total Amount : %.2f",P[position].totalAmount);
     }
+}
+product high_sales()
+{
+   int i;
+   product max;
+   if(n!=0)
+   {
+       for(i=0;i<n;i++)
+       {
+           if(i==0)
+           {
+               max=P[i];
+           } else if(P[i].price>max.price)
+            {
+                max=P[i];
+            }
+       }
+   }
+   return max;
 }
 void main()
 {
@@ -108,6 +129,7 @@ void main()
     int choice;
     int action;
     int number;
+    product max;
     do
     { clrscr();
      printf("*********Welcome To the grocerie store********\n");
@@ -123,6 +145,21 @@ void main()
          case 1:printf("Input number of items youi wich to add :");scanf("%d",&number);add(number);break;
          case 2:inventory();break;
          case 3:purchase();break;
+         case 4:
+            {
+                //product with highest sales:
+                max= high_sales();
+                if(n!=0)
+                {
+                    printf("Code : %d\n",max.code);
+                    printf("Name : %s\n",max.name);
+                    printf("Price : %.2f \n",max.price);
+                    printf("Discount : %d\n",max.discount);
+                    printf("Quantity Purchased : %d\n",max.number);
+                    printf("Stock : %d\n",max.qte);
+                    printf("Total Sales : %.2f\n",max.totalamount);
+                }
+            } break;
          case 8:printf("goodbye :) ");getch();exit(0);break;
          default:printf("Wrong");break;
      }
