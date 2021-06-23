@@ -33,7 +33,7 @@ void Login()
     customer p;
     int i=0;
     int c=1;
-    printf("SIGN IN TO AN EXISTENT ACCOUNT\n");
+    gotoxy()printf("SIGN IN TO AN EXISTENT ACCOUNT\n");
     printf("ENTER YOUR USERNAME :");
     gets(p.name);
     printf("ENTER YOUR PASSWORD :");
