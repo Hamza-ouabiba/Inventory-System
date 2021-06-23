@@ -126,14 +126,14 @@ void purchase()
         printf("***Item Found***\n");
         printf("Name : %s \n",P[position].name);
         printf("Quantity : %d\n",P[position].qte);
-        printf("Price : %.2f \n",P[position].price);
+        printf("Price : %.2f MAD \n",P[position].price);
         printf("Discount : %.2f %%\n",P[position].discount);
         printf("Input Number of purchases :");
         scanf("%d",&P[position].number);
         printf("\nRemaining in stocks : %d \n",P[position].qte-P[position].number);
         printf("Discount Amount: %.2f\n",P[position].discount*P[position].number);
-        P[position].totalAmount=P[position].price-P[position].price*P[position].discount*P[position].number/100;
-        printf("Total Amount : %.2f",P[position].totalAmount);
+        P[position].totalAmount=P[position].price*P[position].number-P[position].price*P[position].number*(P[position].discount*P[position].number/100);
+        printf("Total Amount : %.2f MAD",P[position].totalAmount);
     }
 }
 product high_sales()
@@ -147,7 +147,7 @@ product high_sales()
            if(i==0)
            {
                max=P[i];
-           } else if(P[i].price>max.price)
+           } else if(P[i].totalAmount>max.totalAmount)
             {
                 max=P[i];
             }
@@ -182,9 +182,9 @@ void main()
     int number;
     product max;
     //login to a certain account
-    Login();
     do
     { clrscr();
+    gotoxy(4,4);printf("WALLET : 12000 MAD");
      gotoxy(37,1);printf("*********Welcome To the grocerie store********\n");
      gotoxy(40,4);puts("[1]=Add a New product to the list ");
      gotoxy(40,5);puts("[2]=View inventory ");
@@ -207,10 +207,10 @@ void main()
                     printf("Code : %d\n",max.code);
                     printf("Name : %s\n",max.name);
                     printf("Price : %.2f \n",max.price);
-                    printf("Discount : %.2f\n",max.discount);
+                    printf("Discount : %.2f %%\n",max.discount);
                     printf("Quantity Purchased : %d\n",max.number);
                     printf("Stock Remaining : %d\n",max.qte-max.number);
-                    printf("Total Sales : %.2f\n",max.totalAmount);
+                    printf("Total Sales : %.2f MAD\n",max.totalAmount);
                 }
             } break;
          case 5:delete_product();break;
