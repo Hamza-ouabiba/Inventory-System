@@ -174,6 +174,50 @@ void delete_product()
         printf("\nTHE PRODUCT IS SUCCESFFULLY DELETED FROM THE LIST \n");
     }
 }
+void edit()
+{
+    int i;
+    int code;
+    int position;
+    printf("Enter the Product code you wich to edit : ");
+    scanf("%d",&code);
+    position=found(code);
+    if(found(code)==-1)
+    {
+        printf("PRODUCT UNAVAILALE IN THE STOCK LIST ");
+    } else
+    {
+        printf("New Code :");scanf("%d",&P[position].code);
+        printf("Name : ");fflush(stdin);gets(P[position].name);
+        printf("Quantity : ");scanf("%d",&P[position].qte);
+        printf("Price of Product : ");scanf("%f",&P[position].price);
+        printf("Discount in percent : ");scanf("%f",&P[position].discount);
+        printf("Manufacturing Date : ");scanf("%d%d%d",&P[position].manufacturing.d,&P[position].manufacturing.m,&P[position].manufacturing.y);
+    }
+}
+void discount_products()
+{
+    int i;
+    if(n!=0)
+    {
+        for(i=0;i<n;i++)
+        {
+            if(P[i].discount>0)
+            {
+                printf("\n---------------------------------------------\n");
+                printf("\nPRODUCT NUMBER %d\n",i+1);
+                printf("Serial Number : %d \n",P[i].code);
+                printf("Product Name : %s \n",P[i].name);
+                printf("Product Quantity :%d \n",P[i].qte);
+                printf("Manufacturing Date :  %d/%d/%d \n",P[i].manufacturing.d,P[i].manufacturing.m,P[i].manufacturing.y);
+                printf("Discount : %.2f %%\n",P[i].discount);
+            }
+        }
+    } else
+    {
+        printf("NO PRODUCT IN THE INVENTORY  ");
+    }
+}
 void main()
 {
     //Local variables :
@@ -190,9 +234,11 @@ void main()
      gotoxy(40,5);puts("[2]=View inventory ");
      gotoxy(40,6);puts("[3]=Make a Purshase ");
      gotoxy(40,7);puts("[4]=Display products with highest sales  ");
-     gotoxy(40,8);puts("[5]=Edit and Delete a product ");
-     gotoxy(40,9);puts("[6]=Exit programme ");
-     gotoxy(40,10);scanf("%d",&choice);
+     gotoxy(40,8);puts("[5]=Delete a product ");
+     gotoxy(40,9);puts("[6]Edit product ");
+     gotoxy(40,10);puts("[7]=Display products with Discounts  ");
+     gotoxy(40,11);puts("[8]=Exit programme ");
+     gotoxy(40,12);scanf("%d",&choice);
      switch(choice)
      {
          case 1:printf("Input number of items youi wich to add :");scanf("%d",&number);add(number);break;
@@ -214,13 +260,23 @@ void main()
                 }
             } break;
          case 5:delete_product();break;
-         case 6:printf("goodbye :) ");getch();exit(0);break;
+         case 6:
+            {
+                //editing a product :
+                //here;
+                edit();
+            } break;
+         case 7:
+            {
+                discount_products();
+            } break;
+         case 8:printf("goodbye :) ");getch();exit(0);break;
          default:printf("Wrong");break;
      }
      printf("\n---------------------------------------------\n");
      printf("Do you wan't to perform another action ? \n");
      printf("[1]=YES\n");
-     printf("[1]=NOP\n");
+     printf("[2]=NOP\n");
      scanf("%d",&action);
     } while(action==1);
 }
