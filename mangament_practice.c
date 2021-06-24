@@ -33,10 +33,9 @@ void Login()
     customer p;
     int i=0;
     int c=1;
-    gotoxy()printf("SIGN IN TO AN EXISTENT ACCOUNT\n");
-    printf("ENTER YOUR USERNAME :");
+    gotoxy(30,6);printf("ENTER YOUR USERNAME :");
     gets(p.name);
-    printf("ENTER YOUR PASSWORD :");
+    gotoxy(30,7);printf("ENTER YOUR PASSWORD :");
     while(1)
     {
         p.password[i]=getch();
@@ -226,9 +225,9 @@ void main()
     int number;
     product max;
     //login to a certain account
+    Login();
     do
     { clrscr();
-    gotoxy(4,4);printf("WALLET : 12000 MAD");
      gotoxy(37,1);printf("*********Welcome To the grocerie store********\n");
      gotoxy(40,4);puts("[1]=Add a New product to the list ");
      gotoxy(40,5);puts("[2]=View inventory ");
