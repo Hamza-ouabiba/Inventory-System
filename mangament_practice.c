@@ -1,8 +1,7 @@
 #include<stdio.h>
 #include<conio.h>
 #include<string.h>
-//a managent system :
-//les prototypes des fonctions et procedures :
+#include<stdlib.h>
 typedef struct
 {
     int d;
@@ -223,6 +222,7 @@ void main()
     int choice;
     int action;
     int number;
+    int *p;
     product max;
     //login to a certain account
     Login();
@@ -240,7 +240,19 @@ void main()
      gotoxy(40,12);scanf("%d",&choice);
      switch(choice)
      {
-         case 1:printf("Input number of items youi wich to add :");scanf("%d",&number);add(number);break;
+     case 1:
+        {
+            printf("Input the Number of products you wish to add : ");
+            scanf("%d",&number);
+            p=(int *)malloc(number*sizeof(int));
+            if(*p==NULL)
+            {
+                printf("NOT ENOUGH SPACE");
+            } else if(*p==NULL)
+            {
+                add(number);
+            }
+        } break;
          case 2:inventory();break;
          case 3:purchase();break;
          case 4:
@@ -279,3 +291,4 @@ void main()
      scanf("%d",&action);
     } while(action==1);
 }
+
