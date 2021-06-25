@@ -290,5 +290,6 @@ void main()
      printf("[2]=NOP\n");
      scanf("%d",&action);
     } while(action==1);
+    free(p);
 }
 
