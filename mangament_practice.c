@@ -248,7 +248,7 @@ void main()
             if(*p==NULL)
             {
                 printf("NOT ENOUGH SPACE");
-            } else if(*p==NULL)
+            } else if(*p!=NULL)
             {
                 add(number);
             }
