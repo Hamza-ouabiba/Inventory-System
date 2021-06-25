@@ -291,5 +291,6 @@ void main()
      scanf("%d",&action);
     } while(action==1);
     free(p);
+    p=NULL;
 }
 
