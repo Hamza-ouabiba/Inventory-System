@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<conio.h>
+#include<time.h>
 typedef struct
 {
     int m;
@@ -17,7 +18,6 @@ typedef struct
     char nom[20];
 } etudiant;
 void info_etudiant(etudiant *a,int taille)
-{
     int i;
     int j;
     for(i=0;i<taille;i++)
@@ -32,6 +32,14 @@ void info_etudiant(etudiant *a,int taille)
         printf("Donner le matricule  : ");
         scanf("%d",&a[i].matricule);
     }
+}
+void current time()
+{
+  time_t rawtime;
+  struct tm * timeinfo;
+  time ( &rawtime );
+  timeinfo = localtime ( &rawtime );
+  printf ( "Current local time and date: %s", asctime (timeinfo) );
 }
 void ajouter(etudiant *a,int *taille)
 {
