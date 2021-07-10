@@ -1,168 +1,282 @@
 #include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
 #include<conio.h>
-#include<time.h>
+#include<string.h>
+//a managent system :
+//les prototypes des fonctions et procedures :
 typedef struct
 {
+    int d;
     int m;
-    int a;
-    int j;
+    int y;
 } date;
 typedef struct
 {
-    char sexe;
-    int matricule;
-    date naissance;
-    char ville[10];
-    char nom[20];
-} etudiant;
-//we will add some features
-void info_etudiant(etudiant *a,int taille)
-    int i;
-    int j;
-    for(i=0;i<taille;i++)
+    char name[20];
+    int code;
+    int qte;
+    int purchase;
+    float price;
+    float discount;
+    float totalAmount;
+    int number;
+    date manufacturing;
+} product;
+typedef struct
+{
+   char name[20];
+   char password[20];
+} customer;
+product P[100];
+int n;
+void Login()
+{
+    customer p;
+    int i=0;
+    int c=1;
+    printf("SIGN IN TO AN EXISTENT ACCOUNT\n");
+    printf("ENTER YOUR USERNAME :");
+    gets(p.name);
+    printf("ENTER YOUR PASSWORD :");
+    while(1)
     {
-        printf("\n------------ETUDIANT NUMERO %d -------\n",i);
-        printf("Donner le nom de l'etudiant : ");
-        fflush(stdin);
-        gets(a[i].nom);
-        printf("Donner la ville : ");
-        fflush(stdin);
-        gets(a[i].ville);
-        printf("Donner le matricule  : ");
-        scanf("%d",&a[i].matricule);
+        p.password[i]=getch();
+        printf("*");
+        if(p.password[i]==13)
+        {
+            break;
+        } else if(p.password[i]==8)
+        {
+             if(i>0)
+             {
+                 i--;
+                 printf("\b \b");
+             }
+        }
+        i++;
     }
 }
-void current time()
-{
-  time_t rawtime;
-  struct tm * timeinfo;
-  time ( &rawtime );
-  timeinfo = localtime ( &rawtime );
-  printf ( "Current local time and date: %s", asctime (timeinfo) );
-}
-void ajouter(etudiant *a,int *taille)
-{
-   int i;
-        printf("\n------------ETUDIANT NUMERO %d -------\n",i);
-        printf("Donner le nom de l'etudiant : ");
-        fflush(stdin);
-        gets(a[*taille].nom);
-        printf("Donner la ville : ");
-        fflush(stdin);
-        gets(a[*taille].ville);
-        do
-        {
-            printf("Donner le matricule : ");
-            scanf("%d",&a[*taille].matricule);
-        } while(a[*taille].matricule==a[(*taille)-1].matricule);
-        (*taille)++;
-}
-void affichage(etudiant *a,int taille)
+
+void add(int number)
 {
     int i;
-        for(i=0;i<taille;i++)
+    for(i=n;i<n+number;i++)
     {
-        printf("\n------------ETUDIANT NUMERO %d -------\n",i);
-        printf("Nom : %s\n",a[i].nom);
-        printf("Ville : %s\n",a[i].ville);
-        printf("Matricule : %d",a[i].matricule);
+        printf("\n---------------------------------------------\n");
+        printf("Product Code :");
+        scanf("%d",&P[i].code);
+        printf("Product Name :");
+        fflush(stdin);
+        gets(P[i].name);
+        printf("Quantity :");
+        scanf("%d",&P[i].qte);
+        printf("Price of product :");
+        scanf("%f",&P[i].price);
+        printf("Manufacturing Date(dd-mm-yy):");
+        scanf("%d%d%d",&P[i].manufacturing.d,&P[i].manufacturing.m,&P[i].manufacturing.y);
+        printf("Discount  : ");
+        scanf("%f",&P[i].discount);
     }
+    n+=number;
 }
-void Suppression(etudiant *a,int *taille,char ville[])
+void inventory()
 {
     int i;
-    int position;
-    if(*taille!=0)
+    if(n!=0)
     {
-        for(i=0;i<*taille;i++)
-        {
-            if(strcmp(ville,a[i].ville)==0)
-            {
-                break;
-            }
-        }
-        position=i;
-        for(i=position;i<*taille;i++)
-        {
-            a[i]=a[i+1];
-        }
-        (*taille)--;
+     for(i=0;i<n;i++)
+      {
+        printf("\n---------------------------------------------\n");
+        printf("\nPRODUCT NUMBER %d\n",i+1);
+        printf("Serial Number : %d \n",P[i].code);
+        printf("Product Name : %s \n",P[i].name);
+        printf("Product Quantity :%d \n",P[i].qte);
+        printf("Manufacturing Date :  %d/%d/%d \n",P[i].manufacturing.d,P[i].manufacturing.m,P[i].manufacturing.y);
+        printf("Discount : %.2f %%\n",P[i].discount);
+      }
     } else
     {
-        printf("Aucun etudiant : ");
+        printf("NO CURRENT PRODUCTS IN LIST");
     }
 }
-void trier(etudiant *a,int taille)
+int found(int code)
 {
     int i;
-    int j;
-    etudiant swap;
-    for(i=0;i<taille;i++)
+    for(i=0;i<n;i++)
     {
-        for(j=i+1;j<taille;j++)
+        if(code==P[i].code)
         {
-            swap=a[i];
-            a[i]=a[i+1];
-            a[i+1]=swap;
+            return i;
         }
     }
-    printf("\n----------TRIER----------\n");
-      for(i=0;i<taille;i++)
+    return -1;
+}
+void purchase()
+{
+    int i;
+    int code;
+    int position;
+    printf("Input code :");
+    scanf("%d",&code);
+    position=found(code);
+    if(position==-1)
     {
-        printf("\n------------ETUDIANT NUMERO %d -------\n",i);
-        printf("Nom : %s\n",a[i].nom);
-        printf("Ville : %s\n",a[i].ville);
-        printf("Matricule : %d",a[i].matricule);
+        printf("PRODUCT NO AVAILABLE");
+    } else
+    {
+        printf("***Item Found***\n");
+        printf("Name : %s \n",P[position].name);
+        printf("Quantity : %d\n",P[position].qte);
+        printf("Price : %.2f MAD \n",P[position].price);
+        printf("Discount : %.2f %%\n",P[position].discount);
+        printf("Input Number of purchases :");
+        scanf("%d",&P[position].number);
+        printf("\nRemaining in stocks : %d \n",P[position].qte-P[position].number);
+        printf("Discount Amount: %.2f\n",P[position].discount*P[position].number);
+        P[position].totalAmount=P[position].price*P[position].number-P[position].price*P[position].number*(P[position].discount*P[position].number/100);
+        printf("Total Amount : %.2f MAD",P[position].totalAmount);
+    }
+}
+product high_sales()
+{
+   int i;
+   product max;
+   if(n!=0)
+   {
+       for(i=0;i<n;i++)
+       {
+           if(i==0)
+           {
+               max=P[i];
+           } else if(P[i].totalAmount>max.totalAmount)
+            {
+                max=P[i];
+            }
+       }
+   }
+   return max;
+}
+void delete_product()
+{
+    int code;
+    int i;
+    printf("Input code :");
+    scanf("%d",&code);
+    if(found(code)==-1)
+    {
+        printf("PRODUCT UNVAILABLE ");
+    } else
+    {
+        for(i=found(code);i<n;i++)
+        {
+            P[i]=P[i+1];
+        }
+        n--;
+        printf("\nTHE PRODUCT IS SUCCESFFULLY DELETED FROM THE LIST \n");
+    }
+}
+void edit()
+{
+    int i;
+    int code;
+    int position;
+    printf("Enter the Product code you wich to edit : ");
+    scanf("%d",&code);
+    position=found(code);
+    if(found(code)==-1)
+    {
+        printf("PRODUCT UNAVAILALE IN THE STOCK LIST ");
+    } else
+    {
+        printf("New Code :");scanf("%d",&P[position].code);
+        printf("Name : ");fflush(stdin);gets(P[position].name);
+        printf("Quantity : ");scanf("%d",&P[position].qte);
+        printf("Price of Product : ");scanf("%f",&P[position].price);
+        printf("Discount in percent : ");scanf("%f",&P[position].discount);
+        printf("Manufacturing Date : ");scanf("%d%d%d",&P[position].manufacturing.d,&P[position].manufacturing.m,&P[position].manufacturing.y);
+    }
+}
+void discount_products()
+{
+    int i;
+    if(n!=0)
+    {
+        for(i=0;i<n;i++)
+        {
+            if(P[i].discount>0)
+            {
+                printf("\n---------------------------------------------\n");
+                printf("\nPRODUCT NUMBER %d\n",i+1);
+                printf("Serial Number : %d \n",P[i].code);
+                printf("Product Name : %s \n",P[i].name);
+                printf("Product Quantity :%d \n",P[i].qte);
+                printf("Manufacturing Date :  %d/%d/%d \n",P[i].manufacturing.d,P[i].manufacturing.m,P[i].manufacturing.y);
+                printf("Discount : %.2f %%\n",P[i].discount);
+            }
+        }
+    } else
+    {
+        printf("NO PRODUCT IN THE INVENTORY  ");
     }
 }
 void main()
 {
-    etudiant p[100];
-    int taille;
-    int choix;
-    char ville[20];
+    //Local variables :
+    int choice;
+    int action;
+    int number;
+    product max;
+    //login to a certain account
     do
-    {
-        clrscr();
-        puts("1-Saisir les infos  : ");
-        puts("2-Affichage  :");
-        puts("3-Ajouter Un etudiant : ");
-        puts("4-Suppression : ");
-        puts("0-Quitter  ");
-        scanf("%d",&choix);
-        switch(choix)
-        {
-        case 1:
+    { clrscr();
+    gotoxy(4,4);printf("WALLET : 12000 MAD");
+     gotoxy(37,1);printf("*********Welcome To the grocerie store********\n");
+     gotoxy(40,4);puts("[1]=Add a New product to the list ");
+     gotoxy(40,5);puts("[2]=View inventory ");
+     gotoxy(40,6);puts("[3]=Make a Purshase ");
+     gotoxy(40,7);puts("[4]=Display products with highest sales  ");
+     gotoxy(40,8);puts("[5]=Delete a product ");
+     gotoxy(40,9);puts("[6]Edit product ");
+     gotoxy(40,10);puts("[7]=Display products with Discounts  ");
+     gotoxy(40,11);puts("[8]=Exit programme ");
+     gotoxy(40,12);scanf("%d",&choice);
+     switch(choice)
+     {
+         case 1:printf("Input number of items youi wich to add :");scanf("%d",&number);add(number);break;
+         case 2:inventory();break;
+         case 3:purchase();break;
+         case 4:
             {
-                do
-                  {
-                    printf("Donner le nombre d'etudiant  :");
-                    scanf("%d",&taille);
-                  } while(taille<0 ||taille>100);
-                  info_etudiant(p,taille);
-            } break;
-        case 2:
-            {
-                if(taille==0)
+                //product with highest sales:
+                max= high_sales();
+                if(n!=0)
                 {
-                    printf("Error");
-                } else
-                {
-                    affichage(p,taille);
+                    printf("Code : %d\n",max.code);
+                    printf("Name : %s\n",max.name);
+                    printf("Price : %.2f \n",max.price);
+                    printf("Discount : %.2f %%\n",max.discount);
+                    printf("Quantity Purchased : %d\n",max.number);
+                    printf("Stock Remaining : %d\n",max.qte-max.number);
+                    printf("Total Sales : %.2f MAD\n",max.totalAmount);
                 }
             } break;
-        case 3:ajouter(p,&taille);break;
-        case 4:
+         case 5:delete_product();break;
+         case 6:
             {
-                printf("Donner la ville:  ");
-                fflush(stdin);
-                gets(ville);
-                Suppression(p,&taille,ville);
+                //editing a product :
+                //here;
+                edit();
             } break;
-        case 0:printf("FIN DU PROGRAMME ");break;
-        }
-        getch();
-    } while(choix!=0);
+         case 7:
+            {
+                discount_products();
+            } break;
+         case 8:printf("goodbye :) ");getch();exit(0);break;
+         default:printf("Wrong");break;
+     }
+     printf("\n---------------------------------------------\n");
+     printf("Do you wan't to perform another action ? \n");
+     printf("[1]=YES\n");
+     printf("[2]=NOP\n");
+     scanf("%d",&action);
+    } while(action==1);
 }
