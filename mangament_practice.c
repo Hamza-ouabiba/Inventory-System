@@ -17,6 +17,7 @@ typedef struct
     char ville[10];
     char nom[20];
 } etudiant;
+//we will add some features
 void info_etudiant(etudiant *a,int taille)
     int i;
     int j;
