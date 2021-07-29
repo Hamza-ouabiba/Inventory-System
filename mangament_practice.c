@@ -30,32 +30,30 @@ product P[100];
 int n;
 void Login()
 {
-    customer p;
     int i=0;
-    int c=1;
-    printf("SIGN IN TO AN EXISTENT ACCOUNT\n");
-    printf("ENTER YOUR USERNAME :");
-    gets(p.name);
-    printf("ENTER YOUR PASSWORD :");
-    while(1)
+    char user[]="user";
+    char passwordd[]="pass";
+    do {
+            clrscr();
+     printf("Username: ");
+    fflush(stdin);
+    gets(user);
+    printf("Password: ");
+    while(i<12)
     {
-        p.password[i]=getch();
-        printf("*");
-        if(p.password[i]==13)
-        {
+         fflush(stdin);
+         passwordd[i]=getch();
+          if(passwordd[i]==13)
+            {
             break;
-        } else if(p.password[i]==8)
-        {
-             if(i>0)
-             {
-                 i--;
-                 printf("\b \b");
-             }
-        }
-        i++;
-    }
+           } else {
+             printf("*");
+           }
+          i++;
+       }
+    passwordd[i]='\0';
+    } while(strcmp(user,"user")!=0 || strcmp(passwordd,"pass")!=0);
 }
-
 void add(int number)
 {
     int i;
