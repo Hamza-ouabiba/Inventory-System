@@ -26,7 +26,6 @@ typedef struct
    char name[20];
    char password[20];
 } customer;
-product P[100];
 int n;
 void Login()
 {
@@ -54,7 +53,7 @@ void Login()
     passwordd[i]='\0';
     } while(strcmp(user,"user")!=0 || strcmp(passwordd,"pass")!=0);
 }
-void add(int number)
+void add(product *P,int number)
 {
     int i;
     for(i=n;i<n+number;i++)
@@ -76,7 +75,7 @@ void add(int number)
     }
     n+=number;
 }
-void inventory()
+void inventory(product *P)
 {
     int i;
     if(n!=0)
@@ -96,7 +95,7 @@ void inventory()
         printf("NO CURRENT PRODUCTS IN LIST");
     }
 }
-int found(int code)
+int found(int code,product *P)
 {
     int i;
     for(i=0;i<n;i++)
@@ -108,14 +107,14 @@ int found(int code)
     }
     return -1;
 }
-void purchase()
+void purchase(product *P)
 {
     int i;
     int code;
     int position;
     printf("Input code :");
     scanf("%d",&code);
-    position=found(code);
+    position=found(code,P);
     if(position==-1)
     {
         printf("PRODUCT NO AVAILABLE");
@@ -134,7 +133,7 @@ void purchase()
         printf("Total Amount : %.2f MAD",P[position].totalAmount);
     }
 }
-product high_sales()
+product high_sales(product *P)
 {
    int i;
    product max;
@@ -153,18 +152,18 @@ product high_sales()
    }
    return max;
 }
-void delete_product()
+void delete_product(product *P)
 {
     int code;
     int i;
     printf("Input code :");
     scanf("%d",&code);
-    if(found(code)==-1)
+    if(found(code,P)==-1)
     {
         printf("PRODUCT UNVAILABLE ");
     } else
     {
-        for(i=found(code);i<n;i++)
+        for(i=found(code,P);i<n;i++)
         {
             P[i]=P[i+1];
         }
@@ -172,15 +171,15 @@ void delete_product()
         printf("\nTHE PRODUCT IS SUCCESFFULLY DELETED FROM THE LIST \n");
     }
 }
-void edit()
+void edit(product *P)
 {
     int i;
     int code;
     int position;
     printf("Enter the Product code you wich to edit : ");
     scanf("%d",&code);
-    position=found(code);
-    if(found(code)==-1)
+    position=found(code,P);
+    if(found(code,P)==-1)
     {
         printf("PRODUCT UNAVAILALE IN THE STOCK LIST ");
     } else
@@ -193,7 +192,7 @@ void edit()
         printf("Manufacturing Date : ");scanf("%d%d%d",&P[position].manufacturing.d,&P[position].manufacturing.m,&P[position].manufacturing.y);
     }
 }
-void discount_products()
+void discount_products(product *P)
 {
     int i;
     if(n!=0)
@@ -216,6 +215,35 @@ void discount_products()
         printf("NO PRODUCT IN THE INVENTORY  ");
     }
 }
+void Save(product *P,int n)
+{
+    FILE *a = NULL;
+    int i;
+    char location[20];
+    if(n!=0)
+    {
+          printf("Where do you exactly wan't to save this Data (with the extension on it !!)? ");
+          fflush(stdin);
+          scanf("%s",location);
+           a = fopen(location,"w");
+    if(a!=NULL)
+      {
+        for(i=0;i<n;i++)
+      {
+        fprintf(location,"\n---------------------------------------------\n");
+        fprintf(location,"\nPRODUCT NUMBER %d\n",i+1);
+        fprintf(location,"Serial Number : %d \n",P[i].code);
+        fprintf(location,"Product Name : %s \n",P[i].name);
+        fprintf(location,"Product Quantity :%d \n",P[i].qte);
+        fprintf(location,"Manufacturing Date :  %d/%d/%d \n",P[i].manufacturing.d,P[i].manufacturing.m,P[i].manufacturing.y);
+        fprintf(location,"Discount : %.2f %%\n",P[i].discount);
+      }
+    }
+    }else
+    {
+        printf("Can't open the file unfortunately :(");
+    }
+}
 void main()
 {
     //Local variables :
@@ -223,10 +251,10 @@ void main()
     int action;
     int number;
     product max;
+    product *P;
     //login to a certain account
     do
     { clrscr();
-    gotoxy(4,4);printf("WALLET : 12000 MAD");
      gotoxy(37,1);printf("*********Welcome To the grocerie store********\n");
      gotoxy(40,4);puts("[1]=Add a New product to the list ");
      gotoxy(40,5);puts("[2]=View inventory ");
@@ -235,17 +263,31 @@ void main()
      gotoxy(40,8);puts("[5]=Delete a product ");
      gotoxy(40,9);puts("[6]Edit product ");
      gotoxy(40,10);puts("[7]=Display products with Discounts  ");
-     gotoxy(40,11);puts("[8]=Exit programme ");
+     gotoxy(40,10);puts("[8]=Save products in a specific file   ");
+     gotoxy(40,11);puts("[9]=Exit programme ");
      gotoxy(40,12);scanf("%d",&choice);
      switch(choice)
      {
-         case 1:printf("Input number of items youi wich to add :");scanf("%d",&number);add(number);break;
-         case 2:inventory();break;
-         case 3:purchase();break;
+         case 1:
+             {
+                printf("Input number of items youi wich to add :");
+                scanf("%d",&number);
+                //Allocate the memory
+                P = (product *)malloc(sizeof(product)*number);
+                if(P!=NULL)
+                {
+                    add(P,number);
+                } else
+                {
+                    printf("Full storage");
+                }
+             }break;
+         case 2:inventory(P);break;
+         case 3:purchase(P);break;
          case 4:
             {
                 //product with highest sales:
-                max= high_sales();
+                max= high_sales(P);
                 if(n!=0)
                 {
                     printf("Code : %d\n",max.code);
@@ -257,18 +299,19 @@ void main()
                     printf("Total Sales : %.2f MAD\n",max.totalAmount);
                 }
             } break;
-         case 5:delete_product();break;
+         case 5:delete_product(P);break;
          case 6:
             {
                 //editing a product :
                 //here;
-                edit();
+                edit(P);
             } break;
          case 7:
             {
-                discount_products();
+                discount_products(P);
             } break;
-         case 8:printf("goodbye :) ");getch();exit(0);break;
+         case 8: Save(P,n);break;
+         case 9:printf("goodbye :) ");getch();exit(0);break;
          default:printf("Wrong");break;
      }
      printf("\n---------------------------------------------\n");
@@ -278,3 +321,4 @@ void main()
      scanf("%d",&action);
     } while(action==1);
 }
+
