@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<conio.h>
 #include<string.h>
+#inclue "inven.h"
 void main()
 {
     //Local variables :
